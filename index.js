@@ -9,16 +9,14 @@ import Products from './models/Products.js';
 import Cart from './models/Cart.js';
 import Order from './models/Order.js'
 import Admin from './models/Admin.js';
-
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
 mongoose
-  .connect('mongodb://localhost:27017/Eshop')
+  .connect('mongodb+srv://athulkkorom:athulkkorom@cluster0.2ilvdiu.mongodb.net/?retryWrites=true&w=majority')
   .then(() => {
     console.log('Connected to MongoDB');
-
     app.post('/signup', async (req, res) => {
       const { email, password, Name } = req.body;
 
