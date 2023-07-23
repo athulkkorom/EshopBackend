@@ -34,9 +34,8 @@ mongoose
     // Hash password
     const saltRounds = 10;
     try {
-      const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-      // Create user
+   bcrypt.genSalt(saltRounds,(error,salt)=>{
+    bcrypt.hash(password,salt,async(error,hashedPassword)=>{
       const user = new User({ Name, email, password: hashedPassword });
       await user.save();
       const cart = new Cart({email,products:[]})
@@ -45,6 +44,8 @@ mongoose
       await order.save()
 
       res.status(201).json({ message: 'User created' });
+    })
+   })
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: 'Internal server error' });
