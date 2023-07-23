@@ -9,12 +9,13 @@ import Products from './models/Products.js';
 import Cart from './models/Cart.js';
 import Order from './models/Order.js'
 import Admin from './models/Admin.js';
+import 'dotenv/config.js'
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
 mongoose
-  .connect('mongodb+srv://athulkkorom:athulkkorom@cluster0.2ilvdiu.mongodb.net/?retryWrites=true&w=majority')
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log('Connected to MongoDB');
     app.post('/signup', async (req, res) => {
