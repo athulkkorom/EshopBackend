@@ -62,14 +62,25 @@ mongoose
     }
 
     // Check password
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    if (!isPasswordCorrect) {
-      return res.status(401).json({ message: 'Authentication failed' });
-    }
+    bcrypt.compare(password,user.password,(error,result)=>{
+      if(result===true){
+        const token = jwt.sign({ email: user.email }, 'mysecretkey', { expiresIn: '1h' });
+        res.status(200).json({ message: 'Authentication successful', token, user });
+      }
+      else{
+        res.status(401).json({ message: 'Authentication failed' });
 
-    // Generate JWT token
-    const token = jwt.sign({ email: user.email }, 'mysecretkey', { expiresIn: '1h' });
-    res.status(200).json({ message: 'Authentication successful', token, user });
+
+      }
+    })
+    // const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    // if (!isPasswordCorrect) {
+    //   return res.status(401).json({ message: 'Authentication failed' });
+    // }
+
+    // // Generate JWT token
+    // const token = jwt.sign({ email: user.email }, 'mysecretkey', { expiresIn: '1h' });
+    // res.status(200).json({ message: 'Authentication successful', token, user });
   });
 
   
